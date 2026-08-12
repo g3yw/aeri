@@ -1,4 +1,5 @@
 import { DiscordHoverCard } from '@/components/discord-hover-card'
+import { DonateButton } from '@/components/donate-button'
 
 export default function Page() {
   return (
@@ -30,6 +31,8 @@ export default function Page() {
             or <DiscordHoverCard>Discord</DiscordHoverCard>.
           </p>
         </div>
+
+        <DonateButton />
       </div>
     </main>
   )
