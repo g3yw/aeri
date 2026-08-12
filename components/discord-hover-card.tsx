@@ -1,19 +1,39 @@
 'use client'
 
-import { useDiscordStatus } from '@/hooks/use-discord-status'
+import { useDiscordStatus, type DiscordStatus } from '@/hooks/use-discord-status'
 
-const STATUS_COLOR: Record<string, string> = {
-  online: 'bg-emerald-500',
-  idle: 'bg-amber-500',
-  dnd: 'bg-red-500',
-  offline: 'bg-muted-foreground/50',
+const STATUS_COLOR: Record<DiscordStatus, string> = {
+  online: '#23a559',
+  idle: '#f0b232',
+  dnd: '#23a559',
+  offline: '#80848e',
 }
 
-const STATUS_LABEL: Record<string, string> = {
+const STATUS_LABEL: Record<DiscordStatus, string> = {
   online: 'Online',
-  idle: 'Idle',
-  dnd: 'Do Not Disturb',
+  idle: 'Away',
+  dnd: 'Online',
   offline: 'Offline',
+}
+
+function StatusDot({ status }: { status: DiscordStatus }) {
+  const color = STATUS_COLOR[status]
+  return (
+    <span
+      aria-hidden="true"
+      title={STATUS_LABEL[status]}
+      className="relative inline-flex size-2.5 shrink-0"
+    >
+      <span
+        className="absolute inset-0 animate-ping rounded-full opacity-40"
+        style={{ backgroundColor: color }}
+      />
+      <span
+        className="relative inline-flex size-2.5 rounded-full opacity-90"
+        style={{ backgroundColor: color }}
+      />
+    </span>
+  )
 }
 
 export function DiscordHoverCard({ children }: { children: React.ReactNode }) {
@@ -32,18 +52,10 @@ export function DiscordHoverCard({ children }: { children: React.ReactNode }) {
 
       <span
         role="tooltip"
-        className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 flex -translate-x-1/2 translate-y-1 items-center gap-1.5 whitespace-nowrap rounded-md border border-border bg-card px-3 py-1.5 text-xs font-normal text-foreground opacity-0 shadow-xl shadow-black/60 transition-all duration-150 group-hover:translate-y-0 group-hover:opacity-100"
+        className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-md border border-border/60 bg-background/90 px-2.5 py-1 text-xs font-light text-muted-foreground opacity-0 backdrop-blur-sm transition-opacity duration-150 group-hover:opacity-100"
       >
-        <span
-          aria-hidden="true"
-          title={STATUS_LABEL[status]}
-          className={`h-2 w-2 shrink-0 rounded-full ${STATUS_COLOR[status]}`}
-        />
+        <StatusDot status={status} />
         @mio3d
-        <span
-          aria-hidden="true"
-          className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-border bg-card"
-        />
       </span>
     </span>
   )
